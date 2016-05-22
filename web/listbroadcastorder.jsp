@@ -48,11 +48,10 @@
 					<td><%=listbroadcastorder.getInt("stationID")%></td>
 					<td><%=listbroadcastorder.getInt("clientID")%></td>
 					<td><%=listbroadcastorder.getInt("spotsPerDay")%></td>
-					<td><%=listbroadcastorder.getDate("startDate")%></td>
-					<td><%=listbroadcastorder.getDate("endDate")%></td>
-					<td><%=listbroadcastorder.getTime("startTime")%></td>
-					<td><%=listbroadcastorder.getTime("endTime")%></td>
-					<td><%=listbroadcastorder.getTime("startTime")%></td>
+					<td><%=listbroadcastorder.getString("startDate")%></td>
+					<td><%=listbroadcastorder.getString("endDate")%></td>
+					<td><%=listbroadcastorder.getString("startTime")%></td>
+					<td><%=listbroadcastorder.getString("endTime")%></td>
 					<td><%=listbroadcastorder.getBoolean("mon")%>, <%=listbroadcastorder.getBoolean("tue")%>, <%=listbroadcastorder.getBoolean("wed")%>, <%=listbroadcastorder.getBoolean("thu")%>, <%=listbroadcastorder.getBoolean("fri")%>, <%=listbroadcastorder.getBoolean("sat")%>, <%=listbroadcastorder.getBoolean("sun")%></td>
 					<td><%=listbroadcastorder.getDouble("totalCost")%></td>
 					<td align="center">

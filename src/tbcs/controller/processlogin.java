@@ -2,6 +2,7 @@ package tbcs.controller;
 
 import java.io.IOException;
 
+import javax.crypto.AEADBadTagException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -69,6 +70,7 @@ public class processlogin extends HttpServlet {
 			switch(employee.getPositionName()){
 			case "Account Executive":
 				//redirect to account executive view
+				response.sendRedirect("ae.jsp");
 				break;
 			case "Station Traffic":
 				//redirect to station Traffic view
@@ -80,7 +82,6 @@ public class processlogin extends HttpServlet {
 				//redirect to billing department view
 				break;
 			}
-			response.sendRedirect("employeeindex.jsp");
 			break;
 		case 2://if 2 query client table look for accountID
 			   //store client bean to session

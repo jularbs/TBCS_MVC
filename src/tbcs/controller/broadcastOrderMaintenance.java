@@ -1,35 +1,53 @@
 package tbcs.controller;
 
 import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- * Servlet implementation class broadcastOrderMaintenance
- */
+import tbcs.model.ClientBean;
+import tbcs.utility.SQLOperations;
+
 @WebServlet("/broadcastOrderMaintenance.html")
 public class broadcastOrderMaintenance extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    /**
-     * @see HttpServlet#HttpServlet()
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		doPost(request, response);
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		int boID = Integer.parseInt(request.getParameter("boID"));
 		
-		//parameters boID and update approve delete disapprOve
+		RequestDispatcher dispatcher = null;
+		if(request.getParameter("action").equals("delete")) {
+			ResultSet rs;
+			
+			try {
+				SQLOperations.deleteBroadcastOrder(boID);
+				rs = SQLOperations.getAllBroadcastOrder();
+				dispatcher = getServletContext().getRequestDispatcher("/listbroadcastorder.jsp");
+			}catch (SQLException e) {
+				response.sendRedirect("errordisplay.jsp?code=1");
+			}	
+		} else if(request.getParameter("action").equals("update")) {
+			ResultSet rs;
+			try {
+				SQLOperations.updateBroadcastOrder(boID);
+				rs = SQLOperations.getAllBroadcastOrder();
+				request.setAttribute("listbroadcastorder", rs);
+				dispatcher = getServletContext().getRequestDispatcher("/listbroadcastorder.jsp");
+			} catch (SQLException e) {
+				response.sendRedirect("errordisplay.jsp?code=1");
+			}
+		}
+		dispatcher.forward(request, response);
 	}
-
 }
