@@ -368,7 +368,7 @@ public class SQLOperations implements SQLCommands {
 		ResultSet rs = null;
 		Connection connection = getConnectionInstance();
 		try {
-	        PreparedStatement pstmt = connection.prepareStatement(VIEW_CLIENT_PROFILE);
+	        PreparedStatement pstmt = connection.prepareStatement(VIEW_CLIENTPROFILE);
 	        pstmt.setInt(1, clientID);
 	        rs  = pstmt.executeQuery();	      
 		} catch (SQLException sqle) {
@@ -386,7 +386,7 @@ public class SQLOperations implements SQLCommands {
 		try {
 			connection.setAutoCommit(false);
 	        PreparedStatement pstmt = 
-	        	connection.prepareStatement(UPDATE_CLIENT_PROFILE);
+	        	connection.prepareStatement(UPDATE_CLIENTPROFILE);
 	        pstmt.setString(1, client.getName()); 
 	        pstmt.setString(2, client.getAddressNo());
 	        pstmt.setString(3, client.getStreet());
@@ -397,7 +397,7 @@ public class SQLOperations implements SQLCommands {
 	        pstmt.setString(8, client.getContactLastName());
 	        pstmt.setBoolean(9, client.isAgency());
 	        pstmt.setString(10, client.getEmail());
-	        pstmt.setInt(12, clientID); 
+	        pstmt.setInt(11, clientID); 
 	        updated = pstmt.executeUpdate();   
 	        connection.commit();
 		} catch (SQLException sqle) {
@@ -424,7 +424,7 @@ public class SQLOperations implements SQLCommands {
 		Connection connection = getConnectionInstance();
 		try {
 	        PreparedStatement pstmt = 
-	        	connection.prepareStatement(SEARCH_CLIENT_PROFILE);
+	        	connection.prepareStatement(SEARCH_CLIENTPROFILE);
 	        pstmt.setInt(1, clientID);             
 	        ResultSet rs  = pstmt.executeQuery();
 	        
@@ -452,6 +452,21 @@ public class SQLOperations implements SQLCommands {
 	}
 	
 	//EMPLOYEE
+	public static ResultSet viewEmployeeProfile(int employeeID) throws SQLException{
+		ResultSet rs = null;
+		Connection connection = getConnectionInstance();
+		try {
+	        PreparedStatement pstmt = connection.prepareStatement(VIEW_EMPLOYEEPROFILE);
+	        pstmt.setInt(1, employeeID);
+	        rs  = pstmt.executeQuery();	      
+		} catch (SQLException sqle) {
+			System.out.println("SQLException - viewEmployeeProfile: " + sqle.getMessage());
+				throw new SQLException ("SQLException - viewEmployeeProfile: " + sqle.getMessage());
+		}	
+			return rs;        
+	}
+	
+	
 	public static int addEmployee(EmployeeBean employee) {
 		int employeeID = -1;
 		try{
@@ -518,7 +533,198 @@ public class SQLOperations implements SQLCommands {
 		return employee;
 	}
 	
+	public static int updateEmployeeProfile(EmployeeBean employee, int employeeID) throws SQLException{
+		int updated = 0;
+		Connection connection = getConnectionInstance();
+		
+		try {
+			connection.setAutoCommit(false);
+	        PreparedStatement pstmt = 
+	        	connection.prepareStatement(UPDATE_EMPLOYEEPROFILE);
+	        pstmt.setString(1, employee.getFirstName());
+	        pstmt.setString(2, employee.getMiddleName());
+	        pstmt.setString(3, employee.getLastName());
+	        pstmt.setString(4, employee.getGender());
+	        pstmt.setString(5, employee.getBirthday());
+	        pstmt.setString(6, employee.getAddressNo());
+	        pstmt.setString(7, employee.getStreet());
+	        pstmt.setString(8, employee.getCity()); 
+	        pstmt.setString(9, employee.getZipCode()); 
+	        pstmt.setString(10, employee.getEmail());
+	        pstmt.setInt(11, employeeID); 
+	        updated = pstmt.executeUpdate();   
+	        connection.commit();
+		} catch (SQLException sqle) {
+			String message = "";
+			message = sqle.getMessage();
+			System.out.println("SQLException - updateEmployeeProfile: " 
+				+ sqle.getMessage());
+			
+			try {
+				connection.rollback();
+			} catch (SQLException sql) {
+				System.err.println("Error on Update Connection Rollback - " 
+					+ sql.getMessage());
+			}
+			throw new SQLException("Error on Update Connection Rollback - " + message);
+			
+		}	
+		return updated;
+	}
+	
+	public static EmployeeBean searchEmployeeProfile(int employeeID) throws SQLException{
+		EmployeeBean employee = new EmployeeBean();
+		Connection connection = getConnectionInstance();
+		try {
+	        PreparedStatement pstmt = 
+	        	connection.prepareStatement(SEARCH_EMPLOYEEPROFILE);
+	        pstmt.setInt(1, employeeID);             
+	        ResultSet rs  = pstmt.executeQuery();
+	        
+	        while(rs.next()) {	
+	        	employee.setFirstName(rs.getString("firstName"));
+	        	employee.setMiddleName(rs.getString("middleName"));
+	        	employee.setLastName(rs.getString("lastName"));
+	        	employee.setGender(rs.getString("gender"));
+	        	employee.setBirthday(rs.getString("birthday"));
+	        	employee.setAddressNo(rs.getString("addressNo"));
+	        	employee.setStreet(rs.getString("street"));
+	        	employee.setCity(rs.getString("city"));
+	        	employee.setZipCode(rs.getString("zipCode"));
+	        	employee.setEmail(rs.getString("email"));
+	        	
+	        	
+	      }
+		} catch (SQLException sqle) {
+			System.out.println("SQLException - searchEmployeeProfile: " 
+					+ sqle.getMessage());
+			throw new SQLException("SQLException - searchEmployeeProfile: " 
+					+ sqle.getMessage());
+		}	
+		return employee;
+	}
+	
+	
 	//BROADCASTORDER
+	public static ResultSet getAllBroadcastOrder() throws SQLException {
+		ResultSet rs = null;
+		
+		Statement stmt = getConnectionInstance().createStatement();
+		rs = stmt.executeQuery(VIEW_BROADCAST_ORDER);
+		
+		return rs;
+	}
+	
+	public static ResultSet getAllApprovedBroadcastOrder() throws SQLException{
+		ResultSet rs = null;
+		
+			Statement stmt = getConnectionInstance().createStatement();
+			rs = stmt.executeQuery(VIEW_APPROVED_BROADCAST_ORDER);  
+		
+		return rs;
+	}
+	
+	public static int updateBroadcastOrder(int boID) throws SQLException{
+		int updated = 0;
+		Connection connection = getConnectionInstance();
+		
+		try {
+			connection.setAutoCommit(false);
+	        PreparedStatement pstmt = connection.prepareStatement(UPDATE_BROADCAST_ORDER);
+	        
+	        pstmt.setInt(1, boID);
+	        updated = pstmt.executeUpdate();   
+	        connection.commit();
+		} catch (SQLException sqle) {
+			String message = "";
+			message = sqle.getMessage();
+			System.out.println("SQLException - updateBroadcastOrder: " + sqle.getMessage());
+			
+			try {
+				connection.rollback();
+			} catch (SQLException sql) {
+				System.err.println("Error on Update Connection Rollback - " + sql.getMessage());
+			}
+			throw new SQLException("Error on Update Connection Rollback - " + message);
+			
+		}	
+		return updated;
+	} 
+	
+	public static broadcastOrderBean searcBroadcastOrder(int boID) throws SQLException{
+		broadcastOrderBean boBean = new broadcastOrderBean();
+		Connection connection = getConnectionInstance();
+		
+		try {
+	        PreparedStatement pstmt = connection.prepareStatement(SEARCH_BROADCAST_ORDER);
+	        pstmt.setInt(1, boID);  
+	       
+	        ResultSet rs  = pstmt.executeQuery();
+	        
+	        while(rs.next()) {
+	        	boBean.setBoID(rs.getInt("boID"));
+	        	boBean.setSpotsPerDay(rs.getInt("spotsPerDay"));
+	        	boBean.setStartDate(rs.getString("startDate"));
+	        	boBean.setEndDate(rs.getString("endDate"));
+	        	boBean.setStartTime(rs.getString("startTime"));
+	        	boBean.setEndTime(rs.getString("endTime"));
+	        	boBean.setMon(rs.getBoolean("mon"));
+	        	boBean.setTue(rs.getBoolean("tue"));
+	        	boBean.setWed(rs.getBoolean("wed"));
+	        	boBean.setThu(rs.getBoolean("thu"));
+	        	boBean.setFri(rs.getBoolean("fri"));
+	        	boBean.setSat(rs.getBoolean("sat"));
+	        	boBean.setSun(rs.getBoolean("sun"));
+	        	boBean.setStatus(rs.getString("status"));
+	        	boBean.setAdditionalInstructions(rs.getString("additionalInstructions"));
+	        	boBean.setStationID(rs.getInt("stationID"));
+				boBean.setMaterialID(rs.getInt("materialID"));
+	      }
+		} catch (SQLException sqle) {
+			System.out.println("SQLException - searcBroadcastOrder: " + sqle.getMessage());
+			throw new SQLException("SQLException - searcBroadcastOrder: " + sqle.getMessage());
+		}	
+		return boBean;
+	}
+	
+	public static synchronized int deleteBroadcastOrder(int boID) throws SQLException {
+		int updated = 0;
+
+		try {
+			getConnectionInstance().setAutoCommit(false);
+	        PreparedStatement pstmt = getConnectionInstance().prepareStatement(DELETE_BROADCAST_ORDER);
+	        pstmt.setInt(1, boID);             
+	        updated  = pstmt.executeUpdate();
+	        getConnectionInstance().commit();
+		} catch (SQLException sqle) {
+			System.out.println("SQLException - deleteBroadcastOrder: " + sqle.getMessage());
+			
+			try {
+				getConnectionInstance().rollback();
+			} catch (SQLException sql) {
+				System.err.println("Error on Delete Connection Rollback - " + sql.getMessage());
+				throw new SQLException("Error on Delete Connection Rollback - " + sql.getMessage());
+			}
+			return updated; 
+		}	
+		return updated;
+	}
+	
+	
+	public static ResultSet viewBroadcastOrder(int boID) throws SQLException{
+		ResultSet rs = null;
+		Connection connection = getConnectionInstance();
+		try {
+	        PreparedStatement pstmt = connection.prepareStatement(VIEW_BROADCAST_ORDER_CLIENT);
+	        pstmt.setInt(1, boID);
+	        rs  = pstmt.executeQuery();	      
+		} catch (SQLException sqle) {
+			System.out.println("SQLException - viewBroadcastOrder: " + sqle.getMessage());
+				throw new SQLException ("SQLException - viewBroadcastOrder: " + sqle.getMessage());
+		}	
+			return rs;        
+	}
+	
 	public static Boolean createBroadcastOrder(broadcastOrderBean boBean){ //test and not yet final
 		try{
 			PreparedStatement pstmt = getConnectionInstance().prepareStatement(CREATE_BO);

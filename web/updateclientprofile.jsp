@@ -10,17 +10,22 @@
 <h2>Update Client Profile</h2>
 <%if(request.getParameter("action").equals("update")) {%>
 	<form action="updateclientprofile.html" method="post">
-			<p>Client ID: ${clientID}</p>
-			<p>Name: <input type = "text" name="name" size="25" value="${client.name}"></p>
-			<p>Address No: <input type = "text" name="addressNo" size="25" value="${client.addressNo}"></p>
-			<p>Street: <input type = "text" name="street" size="25" value="${client.street}"></p>
-			<p>City: <input type = "text" name="city" size="25" value="${client.city}"></p>
-			<p>Zip Code: <input type = "text" name="zipCode" size="25" value="${client.zipCode}"></p>
-			<p>Contact First Name: <input type = "text" name="contactFirstName" size="25" value="${client.contactFirstName}"></p>
-			<p>Contact Middle Name: <input type = "text" name="contactMiddleName" size="25" value="${client.contactMiddleName}"></p>
-			<p>Contact Last Name: <input type = "text" name="contactLastName" size="25" value="${client.contactLastName}"></p>
-			<p>Agency: <input type = "text" name="agency" size="25" value="${client.agency}"></p>
-			<p>Email Address: <input type = "text" name="email" size="25" value="${client.email}"></p>
+			<p>Name: <input type = "text" name="name" size="25" value="${userLoggedin.name}"></p>
+			<p>Address No: <input type = "text" name="addressNo" size="25" value="${userLoggedin.addressNo}"></p>
+			<p>Street: <input type = "text" name="street" size="25" value="${userLoggedin.street}"></p>
+			<p>City: <input type = "text" name="city" size="25" value="${userLoggedin.city}"></p>
+			<p>Zip Code: <input type = "text" name="zipCode" size="25" value="${userLoggedin.zipCode}"></p>
+			<p>Contact First Name: <input type = "text" name="contactFirstName" size="25" value="${userLoggedin.contactFirstName}"></p>
+			<p>Contact Middle Name: <input type = "text" name="contactMiddleName" size="25" value="${userLoggedin.contactMiddleName}"></p>
+			<p>Contact Last Name: <input type = "text" name="contactLastName" size="25" value="${userLoggedin.contactLastName}"></p>
+			<label>Type</label>
+		  	<div class="form-group has-feedback">
+			<select name="agency">
+				<option>Agency</option>
+				<option>Advertiser</option>
+			</select>
+		  	</div>
+			<p>Email Address: <input type = "text" name="email" size="25" value="${userLoggedin.email}"></p>
 			<input type="hidden" name="client_ID" value="${clientID}">
 			<input type="submit" value="Update">
 	</form>

@@ -19,15 +19,14 @@
 			<p>Contact Person First Name: ${updateClientProfile.contactFirstName}</p>
 			<p>Contact Person Middle Name: ${updateClientProfile.contactMiddleName}</p>
 			<p>Contact Person Last Name: ${updateClientProfile.contactLastName}</p>
-			<p>Agency: ${updateClientProfile.agency}</p> 
+			<p>Type: ${updateClientProfile.agency}</p> 
 			<p>Email: ${updateClientProfile.email}</p>
-			<p>Status: ${updateClientProfile.status}</p>
 	<% } else { %>
 	  <h1>Update Profile Failed</h1>		
 	<% } %>
 	
-	<form action="searchclient.jsp" method="post">
-		<input type="submit" value="SEARCH CLIENT">
+	<form action="clientindex.jsp" method="post">
+		<input type="submit" value="Go back to the main page">
 	</form> 
 
 </body>

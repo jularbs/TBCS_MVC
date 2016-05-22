@@ -21,13 +21,12 @@
 			<p>City: ${updateEmployeeProfile.city}</p>
 			<p>Zip Code: ${updateEmployeeProfile.zipCode}</p>
 			<p>Email: ${updateEmployeeProfile.email}</p>
-			<p>Status: ${updateEmployeeProfile.status}</p>
 	<% } else { %>
 	  <h1>Update Profile Failed</h1>		
 	<% } %>
 	
-	<form action="searchemployee.jsp" method="post">
-		<input type="submit" value="SEARCH EMPLOYEE">
+	<form action="employeeindex.jsp" method="post">
+		<input type="submit" value="Go back to the main page">
 	</form> 
 
 </body>

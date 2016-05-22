@@ -12,11 +12,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import tbcs.model.ClientBean;
+import tbcs.model.EmployeeBean;
 import tbcs.utility.SQLOperations;
 
-@WebServlet("/viewclientprofile.html")
-public class ViewClientProfile extends HttpServlet {
+@WebServlet("/viewemployeeprofile.html")
+public class ViewEmployeeProfile extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 
@@ -31,16 +31,16 @@ public class ViewClientProfile extends HttpServlet {
 		//add session
 		try{
 			HttpSession session = request.getSession();
-			ClientBean clientBean = (ClientBean) session.getAttribute("userLoggedin");
+			EmployeeBean employeeBean = (EmployeeBean) session.getAttribute("userLoggedin");
 			
-			ResultSet rs = SQLOperations.viewClientProfile(clientBean.getId());
-			request.setAttribute("viewClientProfile", rs);
-			dispatcher = getServletContext().getRequestDispatcher("/viewclientprofile.jsp");
+			ResultSet rs = SQLOperations.viewEmployeeProfile(employeeBean.getId());
+			request.setAttribute("viewEmployeeProfile", rs);
+			dispatcher = getServletContext().getRequestDispatcher("/viewemployeeprofile.jsp");
 					
 		} catch(SQLException e){
 			response.sendRedirect("errordisplay.jsp?code=1");
 		}
-		dispatcher.forward(request, response);
+			dispatcher.forward(request, response);
 		}
 
 }

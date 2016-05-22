@@ -10,37 +10,30 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
-import tbcs.model.ClientBean;
 import tbcs.utility.SQLOperations;
 
-@WebServlet("/viewclientprofile.html")
-public class ViewClientProfile extends HttpServlet {
+@WebServlet("/viewbroadcastorderclient.html")
+public class ViewBroadcastOrderClient extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doPost(request,response);
+		doPost(request, response);
 	}
 
-
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		int boID = Integer.parseInt(request.getParameter("boID"));
 		RequestDispatcher dispatcher = null;
 		
-		//add session
-		try{
-			HttpSession session = request.getSession();
-			ClientBean clientBean = (ClientBean) session.getAttribute("userLoggedin");
+		try {
+			ResultSet rs = SQLOperations.viewBroadcastOrder(boID);
 			
-			ResultSet rs = SQLOperations.viewClientProfile(clientBean.getId());
-			request.setAttribute("viewClientProfile", rs);
-			dispatcher = getServletContext().getRequestDispatcher("/viewclientprofile.jsp");
-					
-		} catch(SQLException e){
+			request.setAttribute("viewbroadcastorderclient", rs);
+			dispatcher = getServletContext().getRequestDispatcher("/viewbroadcastorderclient.jsp");
+		} catch (SQLException e) {
 			response.sendRedirect("errordisplay.jsp?code=1");
 		}
 		dispatcher.forward(request, response);
-		}
+	}
 
 }

@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import tbcs.model.ClientBean;
 import tbcs.utility.SQLOperations;
@@ -23,27 +24,28 @@ public class UpdateClientProfile extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
-			ClientBean client = new ClientBean();
+			HttpSession session = request.getSession();
+			ClientBean clientBean = (ClientBean) session.getAttribute("userLoggedin");
+		
+			clientBean.setName(request.getParameter("name"));
+			clientBean.setAddressNo(request.getParameter("addressNo"));
+			clientBean.setStreet(request.getParameter("street"));
+			clientBean.setCity(request.getParameter("city"));
+			clientBean.setZipCode(request.getParameter("zipCode"));
+			clientBean.setContactFirstName(request.getParameter("contactFirstName"));
+			clientBean.setContactMiddleName(request.getParameter("contactMiddleName"));
+			clientBean.setContactLastName(request.getParameter("contactLastName"));
+			clientBean.setAgency(Boolean.parseBoolean(request.getParameter("agency")));
+			clientBean.setEmail(request.getParameter("email"));
 			
-			client.setName(request.getParameter("name"));
-			client.setAddressNo(request.getParameter("addressNo"));
-			client.setStreet(request.getParameter("street"));
-			client.setCity(request.getParameter("city"));
-			client.setZipCode(request.getParameter("zipCode"));
-			client.setContactFirstName(request.getParameter("contactFirstName"));
-			client.setContactMiddleName(request.getParameter("contactMiddleName"));
-			client.setContactLastName(request.getParameter("contactLastName"));
-			client.setAgency(Boolean.parseBoolean(request.getParameter("agency")));
-			client.setEmail(request.getParameter("email"));
-			
-			int recordsAffected = SQLOperations.updateClientProfile(client, Integer.parseInt(request.getParameter("client_ID")));
-			request.setAttribute("updateClientProfile", client);
+			int recordsAffected = SQLOperations.updateClientProfile(clientBean, Integer.parseInt(request.getParameter("client_ID")));
+			request.setAttribute("updateClientProfile", clientBean);
 			RequestDispatcher dispatcher;
 			
 			if(recordsAffected > 0) {	
-				dispatcher = getServletContext().getRequestDispatcher("/updateProfileStatus.jsp?success=true");
+				dispatcher = getServletContext().getRequestDispatcher("/updateclientprofilestatus.jsp?success=true");
 			} else {
-				dispatcher = getServletContext().getRequestDispatcher("/updateProfileStatus.jsp?success=false");
+				dispatcher = getServletContext().getRequestDispatcher("/updateclientprofilestatus.jsp?success=false");
 			}
 		dispatcher.forward(request, response);		
 		} catch (SQLException e) {

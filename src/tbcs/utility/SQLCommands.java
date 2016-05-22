@@ -2,15 +2,8 @@ package tbcs.utility;
 
 public interface SQLCommands {
 	
-	//github testing
-	
-	
 	String DS_SOURCE = "java:comp/env/jdbc/MBC_TBCSYSTEM";
 	
-	//BROADCSTORDER
-	String CREATE_BO = "INSERT INTO broadcast_order (boDate, clientID, spotsPerDay, startDate, endDate, startTime, endTime, mon, tue, wed, thu, fri, sat, sun, status, additionalInstructions, stationID,materialID) VALUES"+
-					   " (GETDATE(), ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-	String INSERT_ADVERTISEMENTMATERIAL = "INSERT INTO advertising_material VALUES (?,?,?,?,?,?)";
 	//LOGIN AND ACCOUNT
 	String AUTHORIZE = "SELECT accountType, accountID FROM account WHERE username=? and password=?";
 	String LOGIN_CLIENT = "SELECT clientID FROM client WHERE accountID = ?";
@@ -37,28 +30,30 @@ public interface SQLCommands {
 	String SEARCH_EMPLOYEE = "SELECT employeeID, firstName, middleName, lastName, gender, birthday, addressNo, street, city, zipCode, email, accountID, p.name AS position, r.name AS station " +
 							 "FROM employee " +
 							 "LEFT JOIN list_position p ON employee.positionID = p.positionID "+
-							 "LEFT JOIN radio_station r ON employee.stationID = r.stationID " +
+							 "LEFT JOIN radio_station r ON employee.stationID = r.stationID" +
 							 "WHERE employeeID = ?";
-
-	//new
 	
-	String VIEW_CLIENT_PROFILE="select * from client where clientID=?";
+	//CLIENT MANAGE PROFILE
+	String VIEW_CLIENTPROFILE = "SELECT * FROM client WHERE clientID=?";
+	String UPDATE_CLIENTPROFILE = "UPDATE client SET name = ?, addressNo=?, street=?, city=?, zipCode=?, contactFirstName=?, contactMiddleName=?, contactLastName=?, agency=?, email=? where clientID=?";
+	String SEARCH_CLIENTPROFILE = "SELECT * FROM client WHERE clientID=?";
 	
-	//Update Client Profile
-	String UPDATE_CLIENT_PROFILE = "update client set " 
-			+ "name = ?, " 
-			+ "addressNo = ?, " 
-			+ "street = ?, "
-			+ "city = ?, "
-			+ "zipCode = ?, "
-			+ "contactFirstName=?, " 
-			+ "contactMiddleName=?, "
-			+ "contactLastName=?, " 
-			+ "agency=?, " 
-			+ "email=? where clientID=? "; 
+	//EMPLOYEE MANAGE PROFILE
+	String VIEW_EMPLOYEEPROFILE = "SELECT * FROM employee WHERE employeeID=?";
+	String UPDATE_EMPLOYEEPROFILE = "UPDATE employee SET firstName = ?, middleName = ?, lastName = ?,gender = ?,birthday = ?, addressNo=?, street=?, city=?, zipCode=?, email=? where employeeID=?";
+	String SEARCH_EMPLOYEEPROFILE = "SELECT * FROM employee WHERE employeeID=?";
 	
-	//Search Client Profile Update
-	String SEARCH_CLIENT_PROFILE="select * from client WHERE clientID=?";
+	//BROADCST ORDER
+	String CREATE_BO = "INSERT INTO broadcast_order (boDate, clientID, spotsPerDay, startDate, endDate, startTime, endTime, mon, tue, wed, thu, fri, sat, sun, status, additionalInstructions, stationID,materialID) VALUES"+
+						   " (GETDATE(), ?,?,?,?,?,?,?,?,?,?,?,?,?,'Pending',?,?,?)";
+	String INSERT_ADVERTISEMENTMATERIAL = "INSERT INTO advertising_material VALUES (?,?,?,?,?,?)";
+	String VIEW_BROADCAST_ORDER = "SELECT * FROM broadcast_order WHERE status='Pending'";
+	String VIEW_APPROVED_BROADCAST_ORDER  = "SELECT * FROM broadcast_order where status='Approved'";
+	String SEARCH_BROADCAST_ORDER = "SELECT * FROM client where clientID=?";
+	String UPDATE_BROADCAST_ORDER = "UPDATE broadcast_order set status='Approved' where boID=?";
+	String DELETE_BROADCAST_ORDER = "DELETE FROM broadcast_order where boID=?";
+	String VIEW_BROADCAST_ORDER_CLIENT= "SELECT * FROM broadcast_order WHERE boID=?";
+	
 	
 	//DROPDOWNS
 	String DD_RADIOSTATIONS = "SELECT stationID, name FROM radio_station";
