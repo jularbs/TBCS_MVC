@@ -29,7 +29,7 @@
 	      <th>Firstname</th>
 	      <th>Middlename</th>
 	      <th>Lastname</th>
-	      <th>Agency</th>
+	      <th>Type</th>
 	      <th>Email</th>
 	      <th>STATUS</th>
 	     </tr>

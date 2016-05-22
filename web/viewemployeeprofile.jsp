@@ -24,8 +24,8 @@
 				while(viewEmployeeProfile.next()) {
 			%>
 				<tr>
-					<td><%=viewEmployeeProfile.getInt("emplyeeID")%></td>
-					<td><%=viewEmployeeProfile.getString("firstName")%> <%=viewEmployeeProfile.getString("middleName")%> <%=viewEmployeeProfile.getString("lastName")%></td>
+					<td><%=viewEmployeeProfile.getInt("employeeID")%></td>
+					<td><%=viewEmployeeProfile.getString("lastName")%>, <%=viewEmployeeProfile.getString("firstName")%> <%=viewEmployeeProfile.getString("middleName")%></td>
 					<td><%=viewEmployeeProfile.getString("gender")%></td>
 					<td><%=viewEmployeeProfile.getString("birthday")%></td>
 					<td><%=viewEmployeeProfile.getString("addressNo")%> <%=viewEmployeeProfile.getString("street")%> <%=viewEmployeeProfile.getString("city")%> <%=viewEmployeeProfile.getString("zipCode")%></td>

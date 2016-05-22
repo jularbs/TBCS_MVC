@@ -17,7 +17,7 @@
 			<td>Name</td>
 			<td>Address</td>
 			<td>Contact Person</td>
-			<td>Agency</td>
+			<td>Type</td>
 			<td>Email</td>
 		</tr>
 			<% 
