@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Context>
+<Resource name="jdbc/MBC_TBCSYSTEM" auth="Container" type="javax.sql.DataSource"
+              username="javalife" password="javalife"
+              url="jdbc:jtds:sqlserver://localhost:1433;DatabaseName=MBC_TBCSYSTEM;SelectMethod=cursor;"
+              driverClassName="net.sourceforge.jtds.jdbc.Driver"
+              initialSize="5" maxWait="5000"
+              maxActive="120" maxIdle="5"
+              validationQuery="select 1"
+              poolPreparedStatements="true"/>
+</Context>
