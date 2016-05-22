@@ -30,7 +30,7 @@ public interface SQLCommands {
 	String SEARCH_EMPLOYEE = "SELECT employeeID, firstName, middleName, lastName, gender, birthday, addressNo, street, city, zipCode, email, accountID, p.name AS position, r.name AS station " +
 							 "FROM employee " +
 							 "LEFT JOIN list_position p ON employee.positionID = p.positionID "+
-							 "LEFT JOIN radio_station r ON employee.stationID = r.stationID" +
+							 "LEFT JOIN radio_station r ON employee.stationID = r.stationID " +
 							 "WHERE employeeID = ?";
 	
 	//CLIENT MANAGE PROFILE
