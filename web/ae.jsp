@@ -5,16 +5,16 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>TRAFFIC BILLING AND COLLECTIONS SYSTEM</title>
- <!-- Tell the browser to be responsive to screen width -->
+	<title>TRAFFIC, BILLING AND COLLECTIONS SYSTEM</title>
+ 	<!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.5 -->
-    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
     <!-- Ionicons -->
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <!-- Theme style -->
-    <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
-    <link rel="stylesheet" href="dist/css/skins/skin-blue.min.css">
+    <link rel="stylesheet" href="assets/css/AdminLTE.min.css">
+    <link rel="stylesheet" href="assets/css/skins/skin-blue.min.css">
 	<link rel="stylesheet" href="assets/css/bootstrap.min.css">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
@@ -49,9 +49,17 @@
 		</header>
 		<div class="login-box">
       <div class="login-logo">
-	    <a href="../../index2.html"><b>TBC</b>SYSTEM</a>
+        <a href="../../index2.html"><b>TBC</b>SYSTEM</a>
       </div><!-- /.login-logo -->
       <div class="login-box-body">
-	<h1>Welcome ${userLoggedin.getFirstName() } ${userLoggedin.getLastName() }</h1>
+	<h1>Welcome Account Executive!</h1>
+	
+	<form action="listbroadcastorder.html" method="post">
+			<button type="submit" class="btn btn-default" style="width: 180px; margin-left: 40px;">View Broadcast Order</button>
+	</form>
+	
+	<form action="approvedbroadcastorder.html" method="post">
+			<button type="submit" class="btn btn-default" style="width: 180px; margin-left: 40px;">View Approved Broadcast Order</button>
+	</form>
 </body>
 </html>

@@ -41,7 +41,6 @@
         <!-- Header Navbar -->
         <nav class="navbar navbar-static-top" role="navigation">
         
-        
 			 <!-- Navbar Right Menu -->
           <div class="navbar-custom-menu">
             <ul class="nav navbar-nav">
@@ -52,8 +51,17 @@
         <a href="../../index2.html"><b>TBC</b>SYSTEM</a>
       </div><!-- /.login-logo -->
       <div class="login-box-body">	
-      	<h1>Hello Client</h1> 
-      	<a href="createbroadcastorder">CREATE BROADCAST ORDER</a>
-      </div>
+      <h1>Welcome ${userLoggedin.getName()}</h1>
+      <form action="viewclientprofile.html" method="post">
+			<button type="submit" class="btn btn-default" style="width: 180px; margin-left: 40px;">Manage Profile</button>
+	  </form>
+	  <form action="createbroadcastorder.html" method="post">
+			<button type="submit" class="btn btn-default" style="width: 180px; margin-left: 40px;">Broadcast Order</button>
+	  </form>
+	  <form action="viewbroadcastorder.html" method="post">
+			<button type="submit" class="btn btn-default" style="width: 180px; margin-left: 40px;">View Broadcast Order</button>
+	  </form>
+	  
+	  <center><a href="index.jsp" >Logout</a></center>
 </body>
 </html>
