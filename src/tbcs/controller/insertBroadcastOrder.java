@@ -95,9 +95,11 @@ public class insertBroadcastOrder extends HttpServlet {
 			            		break;
 			            	case "startDate":
 			            		bo.setStartDate(item.getString());
+			            		System.out.println("Start Date: " + item.getString());
 			            		break;
 			            	case "endDate":
 			            		bo.setEndDate(item.getString());
+			            		System.out.println("End Date: " + item.getString());
 			            		break;
 			            	case "startTime":
 			            		bo.setStartTime(item.getString());
@@ -131,11 +133,13 @@ public class insertBroadcastOrder extends HttpServlet {
 			            	}
 	
 			            }else{ //if the item is a file
+			            	if(item.getName()!= ""){
 			            	fileName = item.getName();
 			            	File pathFile = new File(getServletContext().getRealPath("/") + "\\advertisements\\" + fileName);
 			            	am.setLink("\\advertisements\\" + fileName);
-			            	item.write(pathFile);
+			            	item.write(pathFile);			            	
 			            	System.out.println(pathFile.getAbsolutePath());
+			            	}
 			            }
 			        }
 			    } catch (FileUploadException e) {
