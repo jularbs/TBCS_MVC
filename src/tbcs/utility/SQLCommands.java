@@ -45,7 +45,7 @@ public interface SQLCommands {
 	
 	//BROADCST ORDER
 	String CREATE_BO = "INSERT INTO broadcast_order (boDate, clientID, spotsPerDay, startDate, endDate, startTime, endTime, mon, tue, wed, thu, fri, sat, sun, status, additionalInstructions, stationID,materialID) VALUES"+
-						   " (GETDATE(), ?,?,?,?,?,?,?,?,?,?,?,?,?,'Pending',?,?,?)";
+						   " (GETDATE(), ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 	String INSERT_ADVERTISEMENTMATERIAL = "INSERT INTO advertising_material VALUES (?,?,?,?,?,?)";
 	String VIEW_BROADCAST_ORDER = "SELECT * FROM broadcast_order WHERE status='Pending'";
 	String VIEW_APPROVED_BROADCAST_ORDER  = "SELECT * FROM broadcast_order where status='Approved'";
