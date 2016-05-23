@@ -606,6 +606,21 @@ public class SQLOperations implements SQLCommands {
 	
 	
 	//BROADCASTORDER
+	public static ResultSet getClientBroadcastOrder(ClientBean cl){
+		ResultSet rsResultSet = null;
+		
+		try{
+			PreparedStatement pstmt = getConnectionInstance().prepareStatement(VIEW_CLIENTBO);
+			pstmt.setInt(1, cl.getId());
+			
+			rsResultSet = pstmt.executeQuery();
+			
+		}catch(SQLException sqle){
+			System.out.println("error on getClientBroadcastOrder: " + sqle.getMessage());
+		}
+		
+		return rsResultSet;
+	}
 	public static ResultSet getAllBroadcastOrder() throws SQLException {
 		ResultSet rs = null;
 		

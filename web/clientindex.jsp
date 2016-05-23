@@ -55,10 +55,10 @@
       <form action="viewclientprofile.html" method="post">
 			<button type="submit" class="btn btn-default" style="width: 180px; margin-left: 40px;">Manage Profile</button>
 	  </form>
-	  <form action="createbroadcastorder.html" method="post">
+	  <form action="createbroadcastorder" method="post">
 			<button type="submit" class="btn btn-default" style="width: 180px; margin-left: 40px;">Broadcast Order</button>
 	  </form>
-	  <form action="viewbroadcastorder.html" method="post">
+	  <form action="viewclientbo" method="post">
 			<button type="submit" class="btn btn-default" style="width: 180px; margin-left: 40px;">View Broadcast Order</button>
 	  </form>
 	  

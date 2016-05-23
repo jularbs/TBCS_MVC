@@ -13,33 +13,26 @@ import javax.servlet.http.HttpSession;
 import tbcs.model.ClientBean;
 import tbcs.utility.SQLOperations;
 
-@WebServlet("/listbroadcastorder.html")
-public class ListBroadcastOrder extends HttpServlet {
+/**
+ * Servlet implementation class viewclientbo
+ */
+@WebServlet("/viewclientbo")
+public class viewclientbo extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-			doPost(request, response);	
+		// TODO Auto-generated method stub
+		doPost(request, response);
 	}
-
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	
-		try {
-			ResultSet rs = SQLOperations.getAllBroadcastOrder();
-			System.out.println("Successful Connection");
+			HttpSession session = request.getSession();
+			ClientBean cl = (ClientBean) session.getAttribute("userLoggedin");
+			ResultSet rs = SQLOperations.getClientBroadcastOrder(cl);
 			
 			request.setAttribute("listbroadcastorder", rs);
-			getServletContext().getRequestDispatcher("/listbroadcastorder.jsp").forward(request, response);
-		}catch (NullPointerException npe) {
-			System.err.println("Invalid Connection");
-			response.sendRedirect("errordisplay.jsp");
-		}catch (Exception e) {
-			System.err.println("Exception - " + e.getMessage());
-			response.sendRedirect("errordisplay.jsp");
-		}
-	
+			getServletContext().getRequestDispatcher("/viewclientbo.jsp").forward(request, response);
 		
+		// TODO Auto-generated method stub
 	}
 
 }
-
-//get request 

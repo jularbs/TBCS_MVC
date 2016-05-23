@@ -53,7 +53,7 @@ public interface SQLCommands {
 	String UPDATE_BROADCAST_ORDER = "UPDATE broadcast_order set status='Approved' where boID=?";
 	String DELETE_BROADCAST_ORDER = "DELETE FROM broadcast_order where boID=?";
 	String VIEW_BROADCAST_ORDER_CLIENT= "SELECT * FROM broadcast_order WHERE boID=?";
-	
+	String VIEW_CLIENTBO = "SELECT * FROM broadcast_order WHERE clientID = ?";
 	
 	//DROPDOWNS
 	String DD_RADIOSTATIONS = "SELECT stationID, name FROM radio_station";
