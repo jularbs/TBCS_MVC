@@ -1,28 +1,23 @@
 package tbcs.model;
 
 public class broadcastOrderBean {
+	
 	private int boID;
-	private String boDate; //change to string
-	private int stationID;
+	private String boDate;
+	private int materialID;
 	private int clientID;
-	private int spotsPerDay;
+	private double totalCost;
+	private String additionalInstruction;
 	private String startDate;
 	private String endDate;
-	private String startTime;
-	private String endTime;
-	private Double totalCost;
-	private int approvedBy;
-	private String remarks;
-	private int materialID;
+	private int totalSpots;
 	private String status;
-	private boolean mon;
-	private boolean tue;
-	private boolean wed;
-	private boolean thu;
-	private boolean fri;
-	private boolean sat;
-	private boolean sun;
-	private String additionalInstructions;
+	private int approvedBy;
+	//foreign keys
+	
+	private AdvertisingMaterialBean advertisementMaterial;
+	private ClientBean client;
+	private EmployeeBean employee;
 	
 	public int getBoID() {
 		return boID;
@@ -30,12 +25,17 @@ public class broadcastOrderBean {
 	public String getBoDate() {
 		return boDate;
 	}
-	public int getStationID() {
-		return stationID;
+	public int getMaterialID() {
+		return materialID;
 	}
-
-	public int getSpotsPerDay() {
-		return spotsPerDay;
+	public int getClientID() {
+		return clientID;
+	}
+	public double getTotalCost() {
+		return totalCost;
+	}
+	public String getAdditionalInstruction() {
+		return additionalInstruction;
 	}
 	public String getStartDate() {
 		return startDate;
@@ -43,41 +43,11 @@ public class broadcastOrderBean {
 	public String getEndDate() {
 		return endDate;
 	}
-	public String getStartTime() {
-		return startTime;
+	public int getTotalSpots() {
+		return totalSpots;
 	}
-	public String getEndTime() {
-		return endTime;
-	}
-	public Double getTotalCost() {
-		return totalCost;
-	}
-	public int getApprovedBy() {
-		return approvedBy;
-	}
-	public String getRemarks() {
-		return remarks;
-	}
-	public boolean isMon() {
-		return mon;
-	}
-	public boolean isTue() {
-		return tue;
-	}
-	public boolean isWed() {
-		return wed;
-	}
-	public boolean isThu() {
-		return thu;
-	}
-	public boolean isFri() {
-		return fri;
-	}
-	public boolean isSat() {
-		return sat;
-	}
-	public boolean isSun() {
-		return sun;
+	public String getStatus() {
+		return status;
 	}
 	public void setBoID(int boID) {
 		this.boID = boID;
@@ -85,11 +55,17 @@ public class broadcastOrderBean {
 	public void setBoDate(String boDate) {
 		this.boDate = boDate;
 	}
-	public void setStationID(int stationID) {
-		this.stationID = stationID;
+	public void setMaterialID(int materialID) {
+		this.materialID = materialID;
 	}
-	public void setSpotsPerDay(int spotsPerDay) {
-		this.spotsPerDay = spotsPerDay;
+	public void setClientID(int clientID) {
+		this.clientID = clientID;
+	}
+	public void setTotalCost(double totalCost) {
+		this.totalCost = totalCost;
+	}
+	public void setAdditionalInstruction(String additionalInstruction) {
+		this.additionalInstruction = additionalInstruction;
 	}
 	public void setStartDate(String startDate) {
 		this.startDate = startDate;
@@ -97,64 +73,37 @@ public class broadcastOrderBean {
 	public void setEndDate(String endDate) {
 		this.endDate = endDate;
 	}
-	public void setStartTime(String startTime) {
-		this.startTime = startTime;
-	}
-	public void setEndTime(String endTime) {
-		this.endTime = endTime;
-	}
-	public void setTotalCost(Double totalCost) {
-		this.totalCost = totalCost;
-	}
-	public void setApprovedBy(int approvedBy) {
-		this.approvedBy = approvedBy;
-	}
-	public void setRemarks(String remarks) {
-		this.remarks = remarks;
-	}
-	public void setMon(boolean mon) {
-		this.mon = mon;
-	}
-	public void setTue(boolean tue) {
-		this.tue = tue;
-	}
-	public void setWed(boolean wed) {
-		this.wed = wed;
-	}
-	public void setThu(boolean thu) {
-		this.thu = thu;
-	}
-	public void setFri(boolean fri) {
-		this.fri = fri;
-	}
-	public void setSat(boolean sat) {
-		this.sat = sat;
-	}
-	public void setSun(boolean sun) {
-		this.sun = sun;
-	}
-	public int getMaterialID() {
-		return materialID;
-	}
-	public void setMaterialID(int materialID) {
-		this.materialID = materialID;
-	}
-	public String getStatus() {
-		return status;
+	public void setTotalSpots(int totalSpots) {
+		this.totalSpots = totalSpots;
 	}
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	public int getClientID() {
-		return clientID;
+	public AdvertisingMaterialBean getAdvertisementMaterial() {
+		return advertisementMaterial;
 	}
-	public void setClientID(int clientID) {
-		this.clientID = clientID;
+	public ClientBean getClient() {
+		return client;
 	}
-	public String getAdditionalInstructions() {
-		return additionalInstructions;
+	public void setAdvertisementMaterial(
+			AdvertisingMaterialBean advertisementMaterial) {
+		this.advertisementMaterial = advertisementMaterial;
 	}
-	public void setAdditionalInstructions(String additionalInstructions) {
-		this.additionalInstructions = additionalInstructions;
+	public void setClient(ClientBean client) {
+		this.client = client;
 	}
+	public int getApprovedBy() {
+		return approvedBy;
+	}
+	public EmployeeBean getEmployee() {
+		return employee;
+	}
+	public void setApprovedBy(int approvedBy) {
+		this.approvedBy = approvedBy;
+	}
+	public void setEmployee(EmployeeBean employee) {
+		this.employee = employee;
+	}
+	
+	
 }

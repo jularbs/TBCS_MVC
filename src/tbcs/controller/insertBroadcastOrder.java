@@ -2,13 +2,9 @@ package tbcs.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.Date;
-import java.sql.Time;
-import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.mail.Session;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -18,47 +14,44 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileItemFactory;
-import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.apache.commons.io.FilenameUtils;
-import org.apache.naming.java.javaURLContextFactory;
 
 import tbcs.model.AdvertisingMaterialBean;
 import tbcs.model.ClientBean;
+import tbcs.model.boScheduleBean;
 import tbcs.model.broadcastOrderBean;
 import tbcs.utility.SQLOperations;
 
 /**
- * Servlet implementation class createBroadcastOrder
+ * Servlet implementation class insertBroadcastOrder
  */
-@WebServlet("/insertbroadcastorder")
+@WebServlet("/insertBroadcastOrder")
 public class insertBroadcastOrder extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
+	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doPost(request, response);
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-	
-		HttpSession session = request.getSession();
-		boolean isMultipart = ServletFileUpload.isMultipartContent(request);
-		ClientBean cl = (ClientBean) session.getAttribute("userLoggedin");
-		AdvertisingMaterialBean am = new AdvertisingMaterialBean();
-		broadcastOrderBean bo = new broadcastOrderBean();
+		//INCOMPLETE: EMAIL CLIENT WHEN BROADCAST ORDER INSERTED
+		//			  EMAIL ACCOUNT EXECUTIVE IF THERE IS A PENDING BO
 		
-		bo.setClientID(cl.getId());
-		am.setClientID(cl.getId());
-		String fileName = "";
+		int BroadcastID = -1;
+		String filename = "";
+		
+		broadcastOrderBean boBean = new broadcastOrderBean();
+		boScheduleBean scheduleBean = new boScheduleBean();
+		AdvertisingMaterialBean amBean = new AdvertisingMaterialBean();
+		
+		HttpSession session = request.getSession();
+		
+		ClientBean clientBean = (ClientBean) session.getAttribute("userLoggedin");
+		boBean.setClientID(clientBean.getId());
+		amBean.setClientID(clientBean.getId());
+		
+		boolean isMultipart = ServletFileUpload.isMultipartContent(request);
  		 if (isMultipart) {
 		        FileItemFactory factory = new DiskFileItemFactory();
 		        ServletFileUpload upload = new ServletFileUpload(factory);
@@ -66,101 +59,120 @@ public class insertBroadcastOrder extends HttpServlet {
 			    try {
 			        List items = upload.parseRequest(request);
 			        Iterator iterator = items.iterator();
+			        System.out.println("I'm here");
 			        while (iterator.hasNext()) {
+			    
 			            FileItem item = (FileItem) iterator.next();
 			            if (item.isFormField()) { //if the item is a String
+			            	System.out.println();
 			            	switch(item.getFieldName()){
 			            	case "name":
-			            		am.setName(item.getString());
+			            		amBean.setName(item.getString());
 			            		break;
 			            	case "product":
-			            		am.setProduct(item.getString());
+			            		amBean.setProduct(item.getString());
 			            		break;
 			            	case "version":
-			            		am.setVersion(item.getString());
+			            		amBean.setVersion(item.getString());
 			            		break;
 			            	case "tagline":
-			            		am.setTagline(item.getString());
+			            		amBean.setTagline(item.getString());
 			            		break;
+			            	
+			            	// getting ID of old advertising material
 			            	case "materialID":
-			            		am.setId(Integer.parseInt(item.getString()));
-			            		bo.setMaterialID(Integer.parseInt(item.getString()));
+			            		boBean.setMaterialID(Integer.parseInt(item.getString()));
 			            		break;
-			            	case "radioStation":
-			            		bo.setStationID(Integer.parseInt(item.getString()));
-			            		System.out.println(item.getString());
-			            		break;
-			            	case "spotsPerDay":
-			            		bo.setSpotsPerDay(Integer.parseInt(item.getString()));
-			            		break;
+			            	//end of advertisement material
+			            	
 			            	case "startDate":
-			            		bo.setStartDate(item.getString());
-			            		System.out.println("Start Date: " + item.getString());
+			            		boBean.setStartDate(item.getString());
 			            		break;
 			            	case "endDate":
-			            		bo.setEndDate(item.getString());
-			            		System.out.println("End Date: " + item.getString());
-			            		break;
-			            	case "startTime":
-			            		bo.setStartTime(item.getString());
-			            		break;
-			            	case "endTime":
-			            		bo.setEndTime(item.getString());
-			            		break;
-			            	case "mon":
-			            		bo.setMon(Boolean.parseBoolean(item.getString()));
-			            		break;
-			            	case "tue":
-			            		bo.setTue(Boolean.parseBoolean(item.getString()));
-			            		break;
-			            	case "wed":
-			            		bo.setWed(Boolean.parseBoolean(item.getString()));
-			            		break;
-			            	case "thu":
-			            		bo.setThu(Boolean.parseBoolean(item.getString()));
-			            		break;
-			            	case "fri":
-			            		bo.setFri(Boolean.parseBoolean(item.getString()));
-			            		break;
-			            	case "sat":
-			            		bo.setSat(Boolean.parseBoolean(item.getString()));
-			            		break;
-			            	case "sun":
-			            		bo.setSun(Boolean.parseBoolean(item.getString()));
+			            		boBean.setEndDate(item.getString());
 			            		break;
 			            	case "additionalInstructions":
-			            		bo.setAdditionalInstructions(item.getString());
+			            		boBean.setAdditionalInstruction(item.getString());
+				            	
+			            		//get id
+				            	//end of broadcastorder
+			            		BroadcastID = SQLOperations.createBroadcastOrder(boBean);
+			            		//auditTrail: "Broadcast Order with ID " + BroadcastID + " inserted in database";
+			            		scheduleBean.setBoID(BroadcastID); // setting BOid of schedules to inserted BO
+			            		break;
+			            		
+			            	
+			            	//insertBroadcastorder
+			            	case "radioStation[]":
+			            		scheduleBean.setStationID(Integer.parseInt(item.getString()));
+			            		break;
+			            	case "startTime[]":
+			            		scheduleBean.setStartTime(item.getString());
+			            		break;
+			            	case "endTime[]":
+			            		scheduleBean.setEndTime(item.getString());
+			            		break;
+			            	case "spotsPerDay[]":
+			            		scheduleBean.setSpotsPerDay(Integer.parseInt(item.getString()));
+			            		break;
+			            	case "mon[]":
+			            		System.out.println("Iterated Monday");
+			            		scheduleBean.setMon(Boolean.parseBoolean(item.getString()));
+			            		break;
+			            	case "tue[]":
+			            		System.out.println("Iterated Tuesday");
+			            		scheduleBean.setTue(Boolean.parseBoolean(item.getString()));
+			            		break;
+			            	case "wed[]":
+			            		System.out.println("Iterated Wednesday");
+			            		scheduleBean.setWed(Boolean.parseBoolean(item.getString()));
+			            		break;
+			            	case "thu[]":
+			            		System.out.println("Iterated Thursday");
+			            		scheduleBean.setThu(Boolean.parseBoolean(item.getString()));
+			            		break;
+			            	case "fri[]":
+			            		System.out.println("Iterated Friday");
+			            		scheduleBean.setFri(Boolean.parseBoolean(item.getString()));
+			            		break;
+			            	case "sat[]":
+			            		System.out.println("Iterated Saturday");
+			            		scheduleBean.setSat(Boolean.parseBoolean(item.getString()));
+			            		break;
+			            	case "sun[]":
+			            		System.out.println("Iterated Sunday");  
+			            		scheduleBean.setSun(Boolean.parseBoolean(item.getString()));
+			            		break; 
+			            	case "buffer":
+			            		SQLOperations.insertBroadcastSchedule(scheduleBean);
+			            		//auditTrail: "Schedule inserted to Broadcast Order ID: " + BroadcastID;
+			            		
+			            		//instantiate new schedule bean with id of broadcast ID
+			            		scheduleBean = new boScheduleBean();
+			            		scheduleBean.setBoID(BroadcastID);
+			            		break;
+			            	//end of broadcastschedule
 			            	}
+			            	
 	
 			            }else{ //if the item is a file
-			            	if(item.getName()!= ""){
-			            	fileName = item.getName();
-			            	File pathFile = new File(getServletContext().getRealPath("/") + "\\advertisements\\" + fileName);
-			            	am.setLink("\\advertisements\\" + fileName);
-			            	item.write(pathFile);			            	
-			            	System.out.println(pathFile.getAbsolutePath());
+			            	if(item.getName() != ""){
+			            		filename = item.getName();
+			            		File pathFile = new File(getServletContext().getRealPath("/") + "\\advertisements\\" + filename);
+			            		amBean.setLink("\\advertisements\\" + filename);
+			            		item.write(pathFile);			            		
+			            		//auditTrail "File saved at" + pathFile.getAbsolutePath();
+			            		amBean.setId(SQLOperations.uploadAdvertisingMaterial(amBean));
+			            		boBean.setMaterialID(amBean.getId());
+			            		//auditTrail "Advertisement Material " + filename + "inserted in database";
 			            	}
 			            }
 			        }
-			    } catch (FileUploadException e) {
-			        e.printStackTrace();
-			    } catch (Exception e) {
-			        e.printStackTrace();
+			        }catch (Exception e) {
+			        System.out.println("Error at testBo: " + e.getMessage());
 			    }
 		    }
- 		 
- 		 
- 		 if(am.getId() == -1){//upload file if am.getId() == -1
- 			 am.setId(SQLOperations.uploadAdvertisingMaterial(am));
- 			 bo.setMaterialID(am.getId());
- 			 SQLOperations.createBroadcastOrder(bo);
- 			 response.sendRedirect("bosuccess.jsp");
- 		 }else{//else create BO
- 			SQLOperations.createBroadcastOrder(bo);
- 			response.sendRedirect("bosuccess.jsp");
- 		 }
- 		 
- 		 
 
 	}
+
 }

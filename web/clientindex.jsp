@@ -58,7 +58,7 @@
 	  <form action="createbroadcastorder" method="post">
 			<button type="submit" class="btn btn-default" style="width: 180px; margin-left: 40px;">Broadcast Order</button>
 	  </form>
-	  <form action="viewclientbo" method="post">
+	  <form action="listclientbo" method="post">
 			<button type="submit" class="btn btn-default" style="width: 180px; margin-left: 40px;">View Broadcast Order</button>
 	  </form>
 	  
