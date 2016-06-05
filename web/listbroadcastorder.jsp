@@ -23,19 +23,13 @@
 	<table border="1" width="100%" cellpadding="3" cellspacing="3">
     <thead>
 	    <tr>
-	      <th>Broadcast Order ID</th>
-	      <th>Broadcast Order Date</th>
-	      <th>Station</th>
-	      <th>Advertiser</th> <!-- Client -->
-	      <th>Spots per Day</th>
-	      <th>Start Date</th>
-	      <th>End Date</th>
-	      <th>Start Time</th>
-	      <th>End Time</th>
-	      <th>Air Days</th>
-	      <th>Total Cost</th>
-	      <th>Status</th>
-	     </tr>
+			<th>Client</th>
+			<th>Advertisement Material</th>
+			<th>Start Date</th>
+			<th>End Date</th>
+			<th>status</th>
+			<th></th>
+	    </tr>
      </thead>
      
      	<% 
@@ -43,30 +37,14 @@
 		%>
 		
 			<tr class="active">
-					<td><%=listbroadcastorder.getInt("boID")%></td>
-					<td><%=listbroadcastorder.getString("boDate")%></td>
-					<td><%=listbroadcastorder.getInt("stationID")%></td>
-					<td><%=listbroadcastorder.getInt("clientID")%></td>
-					<td><%=listbroadcastorder.getInt("spotsPerDay")%></td>
+					<td><%=listbroadcastorder.getString("clientName")%></td>
+					<td><%=listbroadcastorder.getString("materialName")%></td>
 					<td><%=listbroadcastorder.getString("startDate")%></td>
 					<td><%=listbroadcastorder.getString("endDate")%></td>
-					<td><%=listbroadcastorder.getString("startTime")%></td>
-					<td><%=listbroadcastorder.getString("endTime")%></td>
-					<td><%=listbroadcastorder.getBoolean("mon")%>, <%=listbroadcastorder.getBoolean("tue")%>, <%=listbroadcastorder.getBoolean("wed")%>, <%=listbroadcastorder.getBoolean("thu")%>, <%=listbroadcastorder.getBoolean("fri")%>, <%=listbroadcastorder.getBoolean("sat")%>, <%=listbroadcastorder.getBoolean("sun")%></td>
-					<td><%=listbroadcastorder.getDouble("totalCost")%></td>
-					<td align="center">
-					  <a href="broadcastOrderMaintenance.html?boID=<%=listbroadcastorder.getInt("boID")%>&action=update">
-					  APPROVE
-					  </a>
-					</td>						
-					<td align="center">
-					  <a href="broadcastOrderMaintenance.html?boID=<%=listbroadcastorder.getInt("boID")%>&action=delete" 
-					  	onclick="if(confirm('Do you want to continue disapprove this record?')){ return true;} else{return false;}">
-				   		DISAPPROVE
-				   </a>
-					</td>
-				</tr>
-			<% } %>	
+					<td><%=listbroadcastorder.getString("status")%></td>
+					<td><a href='boview?id=<%= listbroadcastorder.getInt("boID")%>'>VIEW</a></td>
+			</tr>
+		<%}%>	
 		
 		</table>
 </body>

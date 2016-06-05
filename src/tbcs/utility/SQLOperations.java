@@ -10,6 +10,7 @@ import tbcs.model.ClientBean;
 import tbcs.model.ContactDetails;
 import tbcs.model.EmployeeBean;
 import tbcs.model.accountBean;
+import tbcs.model.boScheduleBean;
 import tbcs.model.broadcastOrderBean;
 
 public class SQLOperations implements SQLCommands {
@@ -513,11 +514,11 @@ public class SQLOperations implements SQLCommands {
 	        
 	        while(rs.next()) {	
 	        	employee.setId(Integer.parseInt(rs.getString("employeeID")));
-	        	employee.setFirstName("firstName");
-	        	employee.setMiddleName("middleName");
-	        	employee.setLastName("lastName");
-	        	employee.setGender("gender");
-	        	employee.setBirthday("birthday");
+	        	employee.setFirstName(rs.getString("firstName"));
+	        	employee.setMiddleName(rs.getString("middleName"));
+	        	employee.setLastName(rs.getString("lastName"));
+	        	employee.setGender(rs.getString("gender"));
+	        	employee.setBirthday(rs.getString("birthday"));
 	        	employee.setAddressNo(rs.getString("addressNo"));
 	        	employee.setStreet(rs.getString("street"));
 	        	employee.setCity(rs.getString("city"));
@@ -665,43 +666,7 @@ public class SQLOperations implements SQLCommands {
 		}	
 		return updated;
 	} 
-	
-	public static broadcastOrderBean searcBroadcastOrder(int boID) throws SQLException{
-		broadcastOrderBean boBean = new broadcastOrderBean();
-		Connection connection = getConnectionInstance();
 		
-		try {
-	        PreparedStatement pstmt = connection.prepareStatement(SEARCH_BROADCAST_ORDER);
-	        pstmt.setInt(1, boID);  
-	       
-	        ResultSet rs  = pstmt.executeQuery();
-	        
-	        while(rs.next()) {
-	        	boBean.setBoID(rs.getInt("boID"));
-	        	boBean.setSpotsPerDay(rs.getInt("spotsPerDay"));
-	        	boBean.setStartDate(rs.getString("startDate"));
-	        	boBean.setEndDate(rs.getString("endDate"));
-	        	boBean.setStartTime(rs.getString("startTime"));
-	        	boBean.setEndTime(rs.getString("endTime"));
-	        	boBean.setMon(rs.getBoolean("mon"));
-	        	boBean.setTue(rs.getBoolean("tue"));
-	        	boBean.setWed(rs.getBoolean("wed"));
-	        	boBean.setThu(rs.getBoolean("thu"));
-	        	boBean.setFri(rs.getBoolean("fri"));
-	        	boBean.setSat(rs.getBoolean("sat"));
-	        	boBean.setSun(rs.getBoolean("sun"));
-	        	boBean.setStatus(rs.getString("status"));
-	        	boBean.setAdditionalInstructions(rs.getString("additionalInstructions"));
-	        	boBean.setStationID(rs.getInt("stationID"));
-				boBean.setMaterialID(rs.getInt("materialID"));
-	      }
-		} catch (SQLException sqle) {
-			System.out.println("SQLException - searcBroadcastOrder: " + sqle.getMessage());
-			throw new SQLException("SQLException - searcBroadcastOrder: " + sqle.getMessage());
-		}	
-		return boBean;
-	}
-	
 	public static synchronized int deleteBroadcastOrder(int boID) throws SQLException {
 		int updated = 0;
 
@@ -725,51 +690,120 @@ public class SQLOperations implements SQLCommands {
 		return updated;
 	}
 	
-	
-	public static ResultSet viewBroadcastOrder(int boID) throws SQLException{
+	public static broadcastOrderBean viewBroadcastOrder(int boID){
 		ResultSet rs = null;
 		Connection connection = getConnectionInstance();
+		broadcastOrderBean bo = new broadcastOrderBean();
+		
 		try {
 	        PreparedStatement pstmt = connection.prepareStatement(VIEW_BROADCAST_ORDER_CLIENT);
 	        pstmt.setInt(1, boID);
+	        System.out.println("boID: " + boID);
 	        rs  = pstmt.executeQuery();	      
+	        
+	        if(rs.next()){
+	        	bo.setBoID(boID);
+		        bo.setBoDate(rs.getString("boDate"));
+		        bo.setMaterialID(rs.getInt("materialID"));
+		        bo.setClientID(rs.getInt("clientID"));
+		        bo.setTotalCost(rs.getDouble("totalCost"));
+		        bo.setAdditionalInstruction(rs.getString("additionalInstructions"));
+		        bo.setStartDate(rs.getString("startDate"));
+		        bo.setEndDate(rs.getString("endDate"));
+		        bo.setTotalSpots(rs.getInt("totalSpots"));
+		        bo.setStatus(rs.getString("status"));	
+	        }
+	    
 		} catch (SQLException sqle) {
 			System.out.println("SQLException - viewBroadcastOrder: " + sqle.getMessage());
-				throw new SQLException ("SQLException - viewBroadcastOrder: " + sqle.getMessage());
-		}	
-			return rs;        
-	}
-	
-	public static Boolean createBroadcastOrder(broadcastOrderBean boBean){ //test and not yet final
-		try{
-			PreparedStatement pstmt = getConnectionInstance().prepareStatement(CREATE_BO);
-			pstmt.setInt(1, boBean.getClientID());
-			pstmt.setInt(2, boBean.getSpotsPerDay());
-			pstmt.setString(3, boBean.getStartDate());
-			pstmt.setString(4, boBean.getEndDate());
-			pstmt.setString(5, boBean.getStartTime());
-			pstmt.setString(6, boBean.getEndTime());
-			pstmt.setBoolean(7, boBean.isMon());
-			pstmt.setBoolean(8, boBean.isTue());
-			pstmt.setBoolean(9, boBean.isWed());
-			pstmt.setBoolean(10, boBean.isThu());
-			pstmt.setBoolean(11, boBean.isFri());
-			pstmt.setBoolean(12, boBean.isSat());
-			pstmt.setBoolean(13, boBean.isSun());
-			pstmt.setString(14, "Pending");
-			pstmt.setString(15, boBean.getAdditionalInstructions());
-			pstmt.setInt(16, boBean.getStationID());
-			pstmt.setInt(17, boBean.getMaterialID());
-			pstmt.executeUpdate();
-			
-		}catch(SQLException e){
-			System.out.println("SQLException on createBroadcastOrder: " + e.getMessage());
-			return false;
 		}
-		return true;
+		
+		return bo;
+	}	
+	
+	public static int createBroadcastOrder(broadcastOrderBean bo){
+		int id = -1;
+		try{
+			PreparedStatement ps = getConnectionInstance().prepareStatement(CREATE_BO, PreparedStatement.RETURN_GENERATED_KEYS);
+			ps.setInt(1, bo.getMaterialID());
+			ps.setInt(2, bo.getClientID());
+			ps.setDouble(3, bo.getTotalCost());
+			ps.setString(4, bo.getAdditionalInstruction());
+			ps.setString(5, bo.getStartDate());
+			ps.setString(6, bo.getEndDate());
+			ps.setInt(7, bo.getTotalSpots());
+			ps.setString(8, "Pending");
+			ps.executeUpdate();
+			
+			ResultSet rs = ps.getGeneratedKeys();
+			
+			if(rs.next())
+				id = rs.getInt(1);
+			else return -1;
+		}catch(SQLException sqle){
+			System.out.println("Error on createBroadcastOrder: " + sqle.getMessage());
+		}
+		
+		return id;
 	}
 	
-	//INSERT ROW FOR ADVERTISEMENT MATERIAL TABLE
+	public static void insertBroadcastSchedule(boScheduleBean bd){
+		try{
+			PreparedStatement ps = getConnectionInstance().prepareStatement(INSERT_BOSCHEDULE);
+			ps.setInt(1, bd.getStationID());
+			ps.setString(2, bd.getStartTime());
+			ps.setString(3, bd.getEndTime());
+			ps.setInt(4, bd.getSpotsPerDay());
+			ps.setBoolean(5, bd.isMon());
+			ps.setBoolean(6, bd.isTue());
+			ps.setBoolean(7, bd.isWed());
+			ps.setBoolean(8, bd.isThu());
+			ps.setBoolean(9, bd.isFri());
+			ps.setBoolean(10, bd.isSat());
+			ps.setBoolean(11, bd.isSun());
+			ps.setDouble(12, bd.getCost());
+			ps.setString(13, "Pending");
+			ps.setInt(14, bd.getBoID());
+			
+			ps.executeUpdate();
+		}catch(SQLException sqle){
+			System.out.println("Error on insertBroadcastSchedule" + sqle.getMessage());
+		}
+	}
+	
+	public static ResultSet listClientBo(int clientID){
+		ResultSet rs = null;
+		
+		try{
+			PreparedStatement pstmt = getConnectionInstance().prepareStatement(LIST_CLIENTBO);
+			pstmt.setInt(1, clientID);
+			
+			rs = pstmt.executeQuery();
+		}catch(SQLException e){
+			System.out.println("Error on listClientBo: " + e.getMessage());
+		}
+		
+		return rs;
+	}
+	//SCHEDULE
+	
+	public static ResultSet getSchedule(int boID){
+		ResultSet rs = null;
+		
+		try{
+			PreparedStatement pstmt = getConnectionInstance().prepareStatement(GET_BOSCHEDULE);
+			pstmt.setInt(1, boID);
+			
+			rs = pstmt.executeQuery();
+			
+		}catch(SQLException sqle){
+			System.out.println("Error on getSchedule: " + sqle.getMessage());
+		}
+		
+		return rs;
+	}
+	
+	//ADVERTISEMENT MATERIAL
 	public static int uploadAdvertisingMaterial(AdvertisingMaterialBean amAdvertisingMaterialBean){
 		int id = -1;
 		
@@ -796,6 +830,34 @@ public class SQLOperations implements SQLCommands {
 		return id;
 	}
 	
+	public static AdvertisingMaterialBean getAdvertisingMaterial(int materialID){
+		ResultSet rs = null;
+		AdvertisingMaterialBean am = new AdvertisingMaterialBean();
+		try{
+			PreparedStatement pstmt = getConnectionInstance().prepareStatement(VIEW_ADVERTISINGMATERIAL);
+			pstmt.setInt(1, materialID);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()){
+				am.setId(materialID);
+				am.setName(rs.getString("name"));
+				am.setProduct(rs.getString("product"));
+				am.setVersion(rs.getString("version"));
+				am.setLink(rs.getString("link"));
+				am.setTagline(rs.getString("tagline"));
+				am.setClientID(rs.getInt("clientID"));	
+			}
+			
+		}catch(SQLException sqle){
+			System.out.println("Error on getAdvertisingMaterial: " + sqle.getMessage());
+		}
+		
+		return am;
+		
+		
+	}
+	
 	//DROPDOWNS
 	public static ResultSet ddAdvertisingMaterial(int clientID){
 		ResultSet rSet= null;
@@ -805,9 +867,6 @@ public class SQLOperations implements SQLCommands {
 			ps.setInt(1, clientID);
 			
 			rSet = ps.executeQuery();
-			if(rSet.next()){
-				System.out.println("ad materials from clientID: " + clientID + " retrieved");
-			}else System.out.println("no Ad material for clientID " + clientID);
 		}catch(SQLException sqle){
 			System.out.println("SQLException on ddAdvertisingMaterial(): " + sqle.getMessage());
 		}

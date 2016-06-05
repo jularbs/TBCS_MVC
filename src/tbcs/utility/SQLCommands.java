@@ -44,16 +44,28 @@ public interface SQLCommands {
 	String SEARCH_EMPLOYEEPROFILE = "SELECT * FROM employee WHERE employeeID=?";
 	
 	//BROADCST ORDER
-	String CREATE_BO = "INSERT INTO broadcast_order (boDate, clientID, spotsPerDay, startDate, endDate, startTime, endTime, mon, tue, wed, thu, fri, sat, sun, status, additionalInstructions, stationID,materialID) VALUES"+
-						   " (GETDATE(), ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+	String CREATE_BO = "INSERT INTO broadcast_order VALUES (GETDATE(),?,?,?,?,?,?,?,?)";
+	String INSERT_BOSCHEDULE = "INSERT INTO bo_schedule VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 	String INSERT_ADVERTISEMENTMATERIAL = "INSERT INTO advertising_material VALUES (?,?,?,?,?,?)";
-	String VIEW_BROADCAST_ORDER = "SELECT * FROM broadcast_order WHERE status='Pending'";
+	String VIEW_BROADCAST_ORDER = "SELECT boID, c.name as clientName, am.name as materialName, bo.startDate, bo.endDate, bo.status" +
+								  "	FROM broadcast_order bo"+
+								  "	LEFT JOIN client c ON bo.clientID = c.clientID"+
+								  "	LEFT JOIN advertising_material am ON bo.materialID = am.materialID" +
+								  "	WHERE bo.status = 'Pending'";
 	String VIEW_APPROVED_BROADCAST_ORDER  = "SELECT * FROM broadcast_order where status='Approved'";
 	String SEARCH_BROADCAST_ORDER = "SELECT * FROM client where clientID=?";
 	String UPDATE_BROADCAST_ORDER = "UPDATE broadcast_order set status='Approved' where boID=?";
 	String DELETE_BROADCAST_ORDER = "DELETE FROM broadcast_order where boID=?";
 	String VIEW_BROADCAST_ORDER_CLIENT= "SELECT * FROM broadcast_order WHERE boID=?";
 	String VIEW_CLIENTBO = "SELECT * FROM broadcast_order WHERE clientID = ?";
+	String VIEW_ADVERTISINGMATERIAL = "SELECT * FROM advertising_material WHERE materialID = ?";
+	String LIST_CLIENTBO = "SELECT * FROM broadcast_order WHERE clientID = ?";	
+	
+	//SCHEDULES
+	String GET_BOSCHEDULE = "SELECT rs.name, bs.startTime, bs.endTime, bs.spotsPerDay, bs.mon, bs.tue, bs.wed, bs.thu, bs.fri, bs.sat, bs.sun, bs.cost " +
+							"FROM bo_schedule bs " +
+							"LEFT JOIN radio_station rs ON bs.stationID = rs.stationID " +
+							"WHERE boID = ?";
 	
 	//DROPDOWNS
 	String DD_RADIOSTATIONS = "SELECT stationID, name FROM radio_station";
